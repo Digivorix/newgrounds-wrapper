@@ -1,7 +1,5 @@
 # A JavaScript Wrapper for Newgrounds API 3.0
 
-# [EXAMPLE GAME - BOUNCE BACK](https://www.newgrounds.com/portal/view/755171)
-
 # Features
 - Small self contained wrapper for Newgrounds API 3.0 calls
 - Functions provided for medals and soreboards
@@ -13,8 +11,8 @@
 # Example Usage
 ```
 Newgrounds.Init(appID, encryptionCipher);
-Newgrounds.UnlockMedal(0);
-Newgrounds.PostScore(0, 12345);
+Newgrounds.UnlockMedal(85749);      // Parameters: (Medal ID)
+Newgrounds.PostScore(15159, 12345);     // Parameters: (Scoreboard ID, score value)
 ```
 # Optional Update/Render for Medal Popups
 ```

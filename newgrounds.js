@@ -54,16 +54,16 @@ const Newgrounds =
 
     Render(context, size = 50)
     { 
-        // show most recently unlocked medal
+		// show most recently unlocked medal
         if (this.displayMedalQueue?.length)
         {
-            const medal = this.displayMedalQueue[0];
+			const medal = this.displayMedalQueue[0];
             const slideOnPecent = medal.time < 1 ? 1-medal.time : 0;
             const alpha = medal.time > this.medalDisplayTime - 1 ?
                 this.medalDisplayTime - medal.time : 1;
 
             const y = context.canvas.height + slideOnPecent * size * 1.5;
-            this.RenderMedal(context, medal.index, 0, y - size, size, alpha);
+            this.RenderMedal(context, medal.id, 0, y - size, size, alpha);
         }
     },
     
@@ -74,11 +74,11 @@ const Newgrounds =
             + (this.showDescriptions? ' - ' + medal.description : ''));
     },
 
-    RenderMedal(context, index, x, y, h, alpha=.5)
+    RenderMedal(context, id, x, y, h, alpha=.5)
     {
-        if (!enableNewgrounds || !this.medals || !this.medals[index])
+        if (!enableNewgrounds || !this.medals || (this.GetMedal(id) == null))
             return;
-            
+
         // setup draw state
         context.save();
         context.fillStyle = '#fff';
@@ -92,7 +92,7 @@ const Newgrounds =
         context.globalAlpha = alpha;
         
         // draw medal icon
-        const medal = this.medals[index];
+        const medal = this.GetMedal(id);
         context.drawImage(medal.image, x, y, h, h);
         context.strokeRect(x, y, h, h);
 
@@ -104,39 +104,55 @@ const Newgrounds =
         context.fillText(text, x + h*1.2, y+h/2);
         context.restore();
     },
-
-    UnlockMedal(index)
+	
+	GetMedal(id)
+	{
+		// Return medal if it exists in the array
+		for (const medal of this.medals)
+        {
+            if(id == medal.id)
+			{
+				return medal;
+			}
+        }
+		return null;
+	},
+	
+    UnlockMedal(id)
     {
-        if (!enableNewgrounds || !this.medals || !this.medals[index])
+        if (!enableNewgrounds || !this.medals || (this.GetMedal(id) == null))
             return;
         
-        const medal = this.medals[index];
+        const medal = this.GetMedal(id);
+		
         if (medal.unlocked)
             return;
         
         medal.unlocked = true;
         this.Call('Medal.unlock', {id:medal.id});
         if (this.showPopups)
-            this.displayMedalQueue.push({index:index, time:0});
+            this.displayMedalQueue.push({id:id, time:0});
     },
+	
+	GetBoard(id)
+	{
+		for (const board of this.scoreboards)
+        {
+            if(id == board.id)
+			{
+				return board;
+			}
+        }
+		return null;
+	},
 
-    PostScore(index, value)
+    PostScore(id, value)
     {
-        if (!enableNewgrounds || !this.scoreboards || !this.scoreboards[index])
+        if (!enableNewgrounds || !this.scoreboards || (this.GetBoard(id) == null))
             return;
             
-        const board = this.scoreboards[index];
+        const board = this.GetBoard(id);
         this.Call('ScoreBoard.postScore', {id:board.id, value});
-    },
-
-    GetScores(index, user=0, social=0, skip=0, limit=10)
-    {
-        if (!enableNewgrounds || !this.scoreboards || !this.scoreboards[index])
-            return;
-            
-        const board = this.scoreboards[index];
-        this.Call('ScoreBoard.getScores', 
-            {id:board.id, user, social, skip, limit}, 0);
     },
     
     Call(component, parameters=0, async=1)

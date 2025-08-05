@@ -28,20 +28,20 @@ canvas
 <body bgcolor=#111>
 <b>Newgrounds API Test</b>
 <br>
-<a href=https://github.com/KilledByAPixel/newgrounds target=_blank>This project is OpenSource on GitHub.</a>
+<a href=https://github.com/Digivorix/newgrounds-wrapper target=_blank>This project is OpenSource on GitHub. Original by Frank Force (aka KilledByAPixel).</a>
 <br><br>
 <b>Medals</b>
 <div id=div_medals></div>
 <br>
-<button onclick=UnlockMedal(0)>Medal 0</button>
-<button onclick=UnlockMedal(1)>Medal 1</button>
-<button onclick=UnlockMedal(2)>Medal 2</button>
+<button onclick=UnlockMedal(85749)>Medal 1</button>
+<button onclick=UnlockMedal(85752)>Medal 2</button>
+<button onclick=UnlockMedal(85751)>Medal 3</button>
 <br><br>
 <b>Scoreboards</b>
 <div id=div_scoreboards></div>
 <br>
 <input id=input_score value=12345 type=number>
-<button onclick='PostScore(0, input_score.value)'>Post Score</button>
+<button onclick='PostScore(15159, input_score.value)'>Post Score</button>
 <br><br>
 <b>Response</b>
 <br>
@@ -55,8 +55,8 @@ canvas
 
 "use strict";
 
-const appID = '50367:TZmUUObe';
-const encryptionCipher = 'gSwuuUahe/VmTn0M/MzSeg=='; // AES-128 Base64
+const appID = '59544:mm4r2D1N';
+const encryptionCipher = 'EI9vDC9uMX7wMCuTboRDAg=='; // AES-128 Base64
 const debug = 1;
 
 Newgrounds.Init(appID, encryptionCipher, debug);
@@ -70,7 +70,7 @@ function UnlockMedal(id)
 
 function PostScore(id, score)
 {
-    Newgrounds.PostScore(id, parseInt(input_score.value));
+	Newgrounds.PostScore(id, parseInt(input_score.value));
     textarea_response.value = Newgrounds.responseText;
 }
 
